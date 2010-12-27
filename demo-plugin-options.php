@@ -1,6 +1,6 @@
 <?php 
 /*
- Plugin Name: Demo Plugin Options
+ Plugin Name: Demo Plugin Menu
  Plugin URI: http://website-in-a-weekend.net/demo-plugins/
  Description: A brief description of the Plugin.
  Version: 0.1
@@ -43,9 +43,54 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
  
 // FirePHP initialization. 
-require_once('FirePHPCore/FirePHP.class.php');
-ob_start();
+//require_once('FirePHPCore/FirePHP.class.php');
+//ob_start();
+
+
+if (!class_exists("demo_plugin_menu")) {
+
+    class demo_plugin_menu {
+    
+        function demo_plugin_menu() {
+            add_action('admin_menu', array(&$this, 'add_demo_menu'));
+        }
+        
+
+        function add_demo_menu() {
+            if (function_exists('add_menu_page')) {
+              
+                add_menu_page('Menu Page Title', 'Menu Title', 
+                      'administrator', __FILE__, 
+                array(&$this, 'demo_menu_page'), 
+                WP_PLUGIN_URL.'/demo-plugin-adminmenu/award_star_gold_1.ico');
+                
+                add_submenu_page(__FILE__, 'Page Title', 'Submenu Title', 
+                      'administrator', 'submenu_handle', 
+                array(&$this, 'demo_submenu_page'));
+            }
+        }
+    
+        function demo_menu_page() {    
+      ?>
+      <div class="wrap">
+          <h2>Demo Menu Page</h2>
+          Does nothing but demonstrate menu.
+      </div>
+      <?php 
+        }
+
+        function demo_submenu_page() {
+      ?>
+      <div class="wrap">
+          <h2>Demo Submenu Page</h2>
+          Does nothing but demonstrate submenu. 
+      </div>
+      <?php 
+        }
+    }
+}
+
+$wpdpd = new demo_plugin_menu();
 
 
 ?>
-
